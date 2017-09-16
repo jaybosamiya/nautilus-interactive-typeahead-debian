@@ -4,6 +4,10 @@ At some point of time, the Nautilus developers decided to drop the idea of inter
 
 This project aims to bring back that feature, by patching the source code back to what it should be.
 
+## Shoutout
+
+A big shoutout to ElectricPrism who has a set of patches on at his [repository](https://github.com/ElectricPrism/nautilus-typeahead-desktop-buff-aur) for AUR, which I adapted to Nautilus 3.22.3-1 on Debian.
+
 ## Warning
 
 This project has been only tested on Debian Stable (Stretch) with Nautilus 3.22.3-1
@@ -40,7 +44,7 @@ Download nautilus, and apply our patch:
 
 ```
 apt source nautilus
-cd nautilus*
+cd nautilus-3.22.3
 patch -p1 -i ../../nautilus-restore-typeahead.patch
 ```
 

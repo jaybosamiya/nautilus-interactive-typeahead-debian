@@ -66,6 +66,13 @@ This will generate a bunch of `.deb` files which we then install:
 sudo dpkg -i ../*.deb
 ```
 
+Final steps, to enable the settings:
+
+```
+gsettings set org.gnome.nautilus.preferences enable-interactive-search true
+nautilus -q
+```
+
 ## License
 
 ```

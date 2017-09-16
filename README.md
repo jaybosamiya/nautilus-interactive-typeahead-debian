@@ -48,6 +48,12 @@ cd nautilus-3.22.3
 patch -p1 -i ../../nautilus-restore-typeahead.patch
 ```
 
+Make sure that we update the version number:
+
+```
+dch -ltypeahead # You can add a description to the changelog if you like here
+```
+
 Build nautilus:
 
 ```

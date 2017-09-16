@@ -1,4 +1,4 @@
-# Interactive Typeahead on Nautilus on Debian
+# Interactive Typeahead for Nautilus on Debian
 
 At some point of time, the Nautilus developers decided to drop the idea of interactive typeahead - the feature that allows you to type in the start of a file and have it be _selected_ in the current directory, instead of applying the typed text as a _filter_ on a _recursive_ search.
 

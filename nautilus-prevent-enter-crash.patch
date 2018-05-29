@@ -1,0 +1,41 @@
+diff --git a/src/nautilus-window-slot.c b/src/nautilus-window-slot.c
+index 2487095..d54a731 100644
+--- a/src/nautilus-window-slot.c
++++ b/src/nautilus-window-slot.c
+@@ -3559,9 +3559,13 @@ isearch_activate_items_alternate (NautilusWindowSlot *slot)
+   priv = nautilus_window_slot_get_instance_private (slot);
+ 
+   file_list = nautilus_view_get_selection (priv->content_view);
+-  nautilus_files_view_activate_files (NAUTILUS_FILES_VIEW (priv->content_view),
+-                                      file_list,
+-                                      NAUTILUS_WINDOW_OPEN_FLAG_NEW_TAB, TRUE);
++
++  if (file_list != NULL)
++  {
++      nautilus_files_view_activate_files (NAUTILUS_FILES_VIEW (priv->content_view),
++                                          file_list,
++                                          NAUTILUS_WINDOW_OPEN_FLAG_NEW_TAB, TRUE);
++  }
+   nautilus_file_list_free (file_list);
+ }
+ 
+@@ -3669,11 +3673,18 @@ isearch_activate_event (GtkEntry           *entry,
+ {
+   // GtkTreePath               *path;
+   NautilusWindowSlotPrivate *priv;
++  GList *selection;
+ 
+   priv = nautilus_window_slot_get_instance_private (slot);
+ 
+   isearch_hide (slot, gtk_get_current_event_device ());
+-  nautilus_files_view_activate_selection (NAUTILUS_FILES_VIEW (priv->content_view));
++
++  selection = nautilus_view_get_selection (priv->content_view);
++  if (selection != NULL)
++  {
++      nautilus_files_view_activate_selection (NAUTILUS_FILES_VIEW (priv->content_view));
++  }
++  nautilus_file_list_free (selection);
+ }
+ 
+ static gboolean

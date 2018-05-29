@@ -32,6 +32,7 @@ index 17982cc..5b4cb2a 100644
        <default>true</default>
        <summary>Whether to open the hovered folder after a timeout when drag and drop operation</summary>
 diff --git a/src/nautilus-global-preferences.h b/src/nautilus-global-preferences.h
+index bf1c896..4eaf370 100644
 --- a/src/nautilus-global-preferences.h
 +++ b/src/nautilus-global-preferences.h
 @@ -161,6 +161,9 @@ typedef enum
@@ -45,6 +46,7 @@ diff --git a/src/nautilus-global-preferences.h b/src/nautilus-global-preferences
  #define NAUTILUS_PREFERENCES_SHOW_MOVE_TO_TRASH_SHORTCUT_CHANGED_DIALOG "show-move-to-trash-shortcut-changed-dialog"
  
 diff --git a/src/nautilus-list-view.c b/src/nautilus-list-view.c
+index 36656c5..bda6474 100644
 --- a/src/nautilus-list-view.c
 +++ b/src/nautilus-list-view.c
 @@ -2695,6 +2695,7 @@ nautilus_list_view_set_selection (NautilusFilesView *view,
@@ -89,6 +91,7 @@ diff --git a/src/nautilus-list-view.c b/src/nautilus-list-view.c
 +  return list_view->details->tree_view;
 +}
 diff --git a/src/nautilus-list-view.h b/src/nautilus-list-view.h
+index f775431..bbcb565 100644
 --- a/src/nautilus-list-view.h
 +++ b/src/nautilus-list-view.h
 @@ -3,7 +3,7 @@
@@ -108,6 +111,7 @@ diff --git a/src/nautilus-list-view.h b/src/nautilus-list-view.h
  
  #endif /* NAUTILUS_LIST_VIEW_H */
 diff --git a/src/nautilus-preferences-window.c b/src/nautilus-preferences-window.c
+index 77cf273..aafc977 100644
 --- a/src/nautilus-preferences-window.c
 +++ b/src/nautilus-preferences-window.c
 @@ -59,6 +59,8 @@
@@ -130,6 +134,7 @@ diff --git a/src/nautilus-preferences-window.c b/src/nautilus-preferences-window
                         NAUTILUS_PREFERENCES_DIALOG_LIST_VIEW_USE_TREE_WIDGET,
                         NAUTILUS_PREFERENCES_LIST_VIEW_USE_TREE);
 diff --git a/src/nautilus-window-slot.c b/src/nautilus-window-slot.c
+index ec3a643..2487095 100644
 --- a/src/nautilus-window-slot.c
 +++ b/src/nautilus-window-slot.c
 @@ -121,6 +121,17 @@ typedef struct
@@ -412,7 +417,7 @@ diff --git a/src/nautilus-window-slot.c b/src/nautilus-window-slot.c
  
      widget_class->grab_focus = nautilus_window_slot_grab_focus;
  
-@@ -3156,3 +3356,802 @@ nautilus_window_slot_get_loading (NautilusWindowSlot *self)
+@@ -3156,3 +3356,792 @@ nautilus_window_slot_get_loading (NautilusWindowSlot *self)
  
      return priv->loading;
  }
@@ -619,12 +624,9 @@ diff --git a/src/nautilus-window-slot.c b/src/nautilus-window-slot.c
 +  priv = nautilus_window_slot_get_instance_private (slot);
 +
 +  file_list = nautilus_view_get_selection (priv->content_view);
-+  if (file_list != NULL)
-+  {
-+    nautilus_files_view_activate_files (NAUTILUS_FILES_VIEW (priv->content_view),
-+                                        file_list,
-+                                        NAUTILUS_WINDOW_OPEN_FLAG_NEW_TAB, TRUE);
-+  }
++  nautilus_files_view_activate_files (NAUTILUS_FILES_VIEW (priv->content_view),
++                                      file_list,
++                                      NAUTILUS_WINDOW_OPEN_FLAG_NEW_TAB, TRUE);
 +  nautilus_file_list_free (file_list);
 +}
 +
@@ -732,18 +734,11 @@ diff --git a/src/nautilus-window-slot.c b/src/nautilus-window-slot.c
 +{
 +  // GtkTreePath               *path;
 +  NautilusWindowSlotPrivate *priv;
-+  GList *selection;
 +
 +  priv = nautilus_window_slot_get_instance_private (slot);
 +
 +  isearch_hide (slot, gtk_get_current_event_device ());
-+
-+  selection = nautilus_view_get_selection (priv->content_view);
-+  if (selection != NULL)
-+  {
-+    nautilus_files_view_activate_selection (NAUTILUS_FILES_VIEW (priv->content_view));
-+  }
-+  nautilus_file_list_free (selection);
++  nautilus_files_view_activate_selection (NAUTILUS_FILES_VIEW (priv->content_view));
 +}
 +
 +static gboolean

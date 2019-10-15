@@ -46,9 +46,9 @@ Download nautilus, and apply our patch:
 
 ```
 apt source nautilus
-cd nautilus-3.22.3
-patch -p1 -i ../../nautilus-restore-typeahead.patch
-patch -p1 -i ../../nautilus-prevent-enter-crash.patch
+cd nautilus-3.30.5
+patch -p1 -i ../../0001-Add-back-Interactive-Typeahead-to-Nautilus-updated-f.patch
+patch -p1 -i ../../0002-Prevent-crash-upon-enter-during-isearch.patch
 ```
 
 Make sure that we update the version number:

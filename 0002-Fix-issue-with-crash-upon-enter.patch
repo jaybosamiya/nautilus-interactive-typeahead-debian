@@ -1,8 +1,21 @@
+From 087cee019eb330b022be2cc03c5015f3f1745f3c Mon Sep 17 00:00:00 2001
+From: Jay Bosamiya <jaybosamiya@gmail.com>
+Date: Tue, 15 Oct 2019 13:43:11 -0400
+Subject: [PATCH 2/3] Fix issue with crash upon enter
+
+---
+ src/nautilus-window-slot.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
+
 diff --git a/src/nautilus-window-slot.c b/src/nautilus-window-slot.c
-index 2487095..d54a731 100644
+index 3bcde14..1280361 100644
 --- a/src/nautilus-window-slot.c
 +++ b/src/nautilus-window-slot.c
-@@ -3559,9 +3559,13 @@ isearch_activate_items_alternate (NautilusWindowSlot *slot)
+@@ -4049,17 +4049,22 @@ isearch_activate_items_alternate (NautilusWindowSlot *slot)
+ {
+   GList                     *file_list;
+   NautilusWindowSlotPrivate *priv;
+ 
    priv = nautilus_window_slot_get_instance_private (slot);
  
    file_list = nautilus_view_get_selection (priv->content_view);
@@ -16,10 +29,19 @@ index 2487095..d54a731 100644
 +                                          file_list,
 +                                          NAUTILUS_WINDOW_OPEN_FLAG_NEW_TAB, TRUE);
 +  }
++
    nautilus_file_list_free (file_list);
  }
  
-@@ -3669,11 +3673,18 @@ isearch_activate_event (GtkEntry           *entry,
+ static gboolean
+ isearch_window_key_press_event (GtkWidget          *widget,
+                                 GdkEventKey        *event,
+                                 NautilusWindowSlot *slot)
+@@ -4159,19 +4164,25 @@ isearch_preedit_changed (GtkEntry           *entry,
+ 
+ static void
+ isearch_activate_event (GtkEntry           *entry,
+                         NautilusWindowSlot *slot)
  {
    // GtkTreePath               *path;
    NautilusWindowSlotPrivate *priv;
@@ -29,7 +51,6 @@ index 2487095..d54a731 100644
  
    isearch_hide (slot, gtk_get_current_event_device ());
 -  nautilus_files_view_activate_selection (NAUTILUS_FILES_VIEW (priv->content_view));
-+
 +  selection = nautilus_view_get_selection (priv->content_view);
 +  if (selection != NULL)
 +  {
@@ -39,3 +60,10 @@ index 2487095..d54a731 100644
  }
  
  static gboolean
+ isearch_enable_hide_real (gpointer data)
+ {
+   NautilusWindowSlot        *slot = NAUTILUS_WINDOW_SLOT (data);
+   NautilusWindowSlotPrivate *priv;
+-- 
+2.20.1
+

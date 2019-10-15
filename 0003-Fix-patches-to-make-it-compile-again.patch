@@ -1,0 +1,105 @@
+From 389f6128f85b39af526f07a5a92e9ec218fc646b Mon Sep 17 00:00:00 2001
+From: Jay Bosamiya <jaybosamiya@gmail.com>
+Date: Tue, 15 Oct 2019 13:43:32 -0400
+Subject: [PATCH 3/3] Fix patches to make it compile again
+
+---
+ src/nautilus-list-view.c   |  2 --
+ src/nautilus-window-slot.c | 22 +++++++++-------------
+ 2 files changed, 9 insertions(+), 15 deletions(-)
+
+diff --git a/src/nautilus-list-view.c b/src/nautilus-list-view.c
+index f0b1b5c..9f0bd2b 100644
+--- a/src/nautilus-list-view.c
++++ b/src/nautilus-list-view.c
+@@ -3092,16 +3092,14 @@ nautilus_list_view_set_selection (NautilusFilesView *view,
+         file = node->data;
+         iters = nautilus_list_model_get_all_iters_for_file (model, file);
+ 
+         for (l = iters; l != NULL; l = l->next)
+         {
+             if (!cursor_is_set_on_selection)
+             {
+-                GtkTreePath *path;
+-
+                 path = gtk_tree_model_get_path (GTK_TREE_MODEL (model),
+                                                 (GtkTreeIter *) l->data);
+                 gtk_tree_view_set_cursor (tree_view, path, NULL, FALSE);
+                 gtk_tree_path_free (path);
+ 
+                 cursor_is_set_on_selection = TRUE;
+                 continue;
+diff --git a/src/nautilus-window-slot.c b/src/nautilus-window-slot.c
+index 1280361..a75e593 100644
+--- a/src/nautilus-window-slot.c
++++ b/src/nautilus-window-slot.c
+@@ -28,14 +28,16 @@
+ #include "nautilus-bookmark-list.h"
+ #include "nautilus-mime-actions.h"
+ #include "nautilus-query-editor.h"
+ #include "nautilus-special-location-bar.h"
+ #include "nautilus-toolbar.h"
+ #include "nautilus-trash-bar.h"
+ #include "nautilus-trash-monitor.h"
++#include "nautilus-canvas-view.h"
++#include "nautilus-list-view.h"
+ #include "nautilus-view.h"
+ #include "nautilus-window.h"
+ #include "nautilus-x-content-bar.h"
+ 
+ #include <glib/gi18n.h>
+ 
+ #include "nautilus-file.h"
+@@ -1406,27 +1408,14 @@ nautilus_window_slot_init (NautilusWindowSlot *self)
+                               "changed::" NAUTILUS_PREFERENCES_ENABLE_INTERACTIVE_SEARCH,
+                               G_CALLBACK (isearch_enable_changed),
+                               self);
+ 
+     priv->view_mode_before_search = NAUTILUS_VIEW_INVALID_ID;
+ }
+ 
+-static void
+-nautilus_window_slot_finalize (GObject *object)
+-{
+-    NautilusWindowSlot *slot;
+-    slot = NAUTILUS_WINDOW_SLOT (object);
+-
+-    g_signal_handlers_disconnect_by_func (nautilus_preferences,
+-                                          isearch_enable_changed,
+-                                          slot);
+-
+-    G_OBJECT_CLASS (nautilus_window_slot_parent_class)->finalize (object);
+-}
+-
+ #define DEBUG_FLAG NAUTILUS_DEBUG_WINDOW
+ #include "nautilus-debug.h"
+ 
+ static void begin_location_change (NautilusWindowSlot        *slot,
+                                    GFile                     *location,
+                                    GFile                     *previous_location,
+                                    GList                     *new_selection,
+@@ -3315,14 +3304,21 @@ nautilus_window_slot_dispose (GObject *object)
+ 
+ static void
+ nautilus_window_slot_finalize (GObject *object)
+ {
+     NautilusWindowSlot *self;
+     NautilusWindowSlotPrivate *priv;
+ 
++    NautilusWindowSlot *slot;
++    slot = NAUTILUS_WINDOW_SLOT (object);
++
++    g_signal_handlers_disconnect_by_func (nautilus_preferences,
++                                          isearch_enable_changed,
++                                          slot);
++
+     self = NAUTILUS_WINDOW_SLOT (object);
+     priv = nautilus_window_slot_get_instance_private (self);
+ 
+     g_clear_pointer (&priv->title, g_free);
+ 
+     G_OBJECT_CLASS (nautilus_window_slot_parent_class)->finalize (object);
+ }
+-- 
+2.20.1
+

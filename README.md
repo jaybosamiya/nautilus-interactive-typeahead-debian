@@ -6,13 +6,13 @@ This project aims to bring back that feature, by patching the source code back t
 
 ## Shoutout
 
-A big shoutout to ElectricPrism who has a set of patches on at his [repository](https://github.com/ElectricPrism/nautilus-typeahead-desktop-buff-aur) for AUR, which I adapted to Nautilus 3.22.3-1 on Debian.
+A big shoutout to ElectricPrism who has a set of patches on at his [repository](https://github.com/ElectricPrism/nautilus-typeahead-desktop-buff-aur) for AUR, which I adapted to Nautilus 3.22.3-1 on Debian. I have also now adapted it to Nautilus 3.30.5 on Debian.
 
 Another big shoutout to M4he who provided code modifications in [this pull request](https://github.com/jaybosamiya/nautilus-interactive-typeahead-debian/pull/2), which I was then able to split into a separate patch to simplify understanding of the changes.
 
 ## Warning
 
-This project has been only tested on Debian Stable (Stretch) with Nautilus 3.22.3-1
+This project has been only tested on Debian Stable (Buster) with Nautilus 3.30.5.
 
 If you are not on this exact version, YMMV.
 
@@ -47,8 +47,9 @@ Download nautilus, and apply our patch:
 ```
 apt source nautilus
 cd nautilus-3.30.5
-patch -p1 -i ../../0001-Add-back-Interactive-Typeahead-to-Nautilus-updated-f.patch
-patch -p1 -i ../../0002-Prevent-crash-upon-enter-during-isearch.patch
+patch -p1 -i ../../0001-Add-back-interactive-typeahead-to-nautilus.patch
+patch -p1 -i ../../0002-Fix-issue-with-crash-upon-enter.patch
+patch -p1 -i ../../0003-Fix-patches-to-make-it-compile-again.patch
 ```
 
 Make sure that we update the version number:
